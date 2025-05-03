@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
+
+body {
+    background-color: rgba(0, 0, 0, 0.781);
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    font-family: "Pirata One", system-ui;
+
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.card {
+    height: 140px;
+    background-image: url('./assets/bg-got.jpg');
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.card.flipped {
+    background-color: #fff;
+    transform: rotateY(180deg);
+}
+
+.card img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    display: none;
+}
+
+.card.flipped img {
+    display: block;
+}
+
+#score {
+    text-align: center;
+    margin: 20px;
+    font-size: 20px;
+}
+
+#reset {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+
+@media (max-width: 767px) {
+    .card {
+        height: 80px;
+        background-image: url('./assets/bg-got.jpg');
+        background-position: center;
+        background-size: cover;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+}

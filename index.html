@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="document.querySelector('audio').play()">Ativar Música</button>
+    <audio loop>
+        <source src="./assets/background-music.mp3" type="audio/mpeg">
+    </audio>
+    <h1>Jogo da Memória - Game of Thrones</h1>
+    <div id="game-board" class="board">
+        
+    </div>
+    <div id="score">Acertos: <span>0</span></div>
+    <button id="reset">Reiniciar Jogo</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const images = [
+        './assets/imagem1.webp', './assets/imagem1.webp',
+        './assets/imagem2.jpg', './assets/imagem2.jpg',
+        './assets/imagem3.jpg', './assets/imagem3.jpg',
+        './assets/imagem4.jpg', './assets/imagem4.jpg',
+        './assets/imagem5.jpg', './assets/imagem5.jpg',
+        './assets/imagem6.jpg', './assets/imagem6.jpg',
+        './assets/imagem7.jpg', './assets/imagem7.jpg',
+        './assets/imagem8.jpg', './assets/imagem8.jpg',
+        './assets/imagem9.jpg', './assets/imagem9.jpg',
+        './assets/imagem10.jpg', './assets/imagem10.jpg'
+
+    ];
+    
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let score = 0;
+    
+    const gameBoard = document.getElementById('game-board');
+    const scoreDisplay = document.querySelector('#score span');
+    const resetButton = document.getElementById('reset');
+    
+    // Embaralhar as cartas
+    function shuffleCards() {
+        for (let i = images.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [images[i], images[j]] = [images[j], images[i]];
+        }
+    }
+    
+    // Criar as cartas no tabuleiro
+    function createBoard() {
+        gameBoard.innerHTML = '';
+        flippedCards = [];
+        matchedPairs = 0;
+        score = 0;
+        scoreDisplay.textContent = score;
+        
+        shuffleCards();
+        
+        images.forEach((image, index) => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.index = index;
+            
+            const imgElement = document.createElement('img');
+            imgElement.src = image;
+            
+            card.appendChild(imgElement);
+            card.addEventListener('click', flipCard);
+            gameBoard.appendChild(card);
+        });
+    }
+    
+    // Virar a carta
+    function flipCard() {
+        if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+            this.classList.add('flipped');
+            flippedCards.push(this);
+            
+            if (flippedCards.length === 2) {
+                checkForMatch();
+            }
+        }
+    }
+    
+    // Verificar se as cartas são iguais
+    function checkForMatch() {
+        const card1 = flippedCards[0];
+        const card2 = flippedCards[1];
+        
+        const img1 = card1.querySelector('img').src;
+        const img2 = card2.querySelector('img').src;
+        
+        if (img1 === img2) {
+            // Par encontrado
+            card1.removeEventListener('click', flipCard);
+            card2.removeEventListener('click', flipCard);
+            flippedCards = [];
+            matchedPairs++;
+            score++;
+            scoreDisplay.textContent = score;
+            
+            if (matchedPairs === images.length / 2) {
+                setTimeout(() => {
+                    alert(`Parabéns! Você completou o jogo com ${score} acertos!`);
+                }, 500);
+            }
+        } else {
+            // Par não encontrado
+            setTimeout(() => {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                flippedCards = [];
+            }, 1000);
+        }
+    }
+    
+    // Reiniciar o jogo
+    resetButton.addEventListener('click', createBoard);
+    
+    // Iniciar o jogo
+    createBoard();
+});
+    </script>
+</body>
+</html>
